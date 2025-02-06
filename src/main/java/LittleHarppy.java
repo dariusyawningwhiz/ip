@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LittleHarppy {
-    static class Task {
-        String description;
-        boolean isDone;
+    static abstract class Task {
+        protected String description;
+        protected boolean isDone;
 
         Task(String description) {
             this.description = description;
@@ -19,8 +19,52 @@ public class LittleHarppy {
             this.isDone = false;
         }
 
+        public String getStatusIcon() {
+            return isDone ? "[X]" : "[ ]";
+        }
+
+        @Override
+        public abstract String toString();
+    }
+
+    static class Todo extends Task {
+        Todo(String description) {
+            super(description);
+        }
+
+        @Override
         public String toString() {
-            return (isDone ? "[X] " : "[ ] ") + description;
+            return "[T]" + getStatusIcon() + " " + description;
+        }
+    }
+
+    static class Deadline extends Task {
+        private String by;
+
+        Deadline(String description, String by) {
+            super(description);
+            this.by = by;
+        }
+
+        @Override
+        public String toString() {
+            return "[D]" + getStatusIcon() + " " + description + " (by: " + by + ")";
+        }
+    }
+
+    static class Event extends Task {
+        private String from;
+        private String to;
+
+        Event(String description, String from, String to) {
+            super(description);
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public String toString() {
+            return "[E]" + getStatusIcon() + " " + description + " (from: " + from + " to: " + to + ")";
         }
     }
 
@@ -33,23 +77,23 @@ public class LittleHarppy {
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm " + chatbotName);
         System.out.println("I am your travel buddy.");
-        System.out.println("You can add your itinerary by typing <date> <time> <place>.");
-        System.out.println("To check your itinerary plan by, type 'list'");
-        System.out.println("To remove an itinerary, type 'remove' followed by the numbering on the list");
-        System.out.println("To mark visited itinerary, type 'mark' followed by the numbering on the list");
+        System.out.println("You can add tasks using 'todo', 'deadline', or 'event'.");
+        System.out.println("To check your tasks, type 'list'.");
+        System.out.println("To remove a task, type 'remove' followed by its number.");
+        System.out.println("To mark a task as done, type 'mark' followed by its number.");
+        System.out.println("To unmark a task, type 'unmark' followed by its number.");
+        System.out.println("Type 'bye' to exit.");
         System.out.println("____________________________________________________________");
 
         while (true) {
             String userInput = scanner.nextLine().trim();
 
             if (userInput.equalsIgnoreCase("bye")) {
-                // Exit message
                 System.out.println("____________________________________________________________");
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println("____________________________________________________________");
                 break;
             } else if (userInput.equalsIgnoreCase("list")) {
-                // Display stored tasks
                 System.out.println("____________________________________________________________");
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < tasks.size(); i++) {
@@ -88,15 +132,42 @@ public class LittleHarppy {
                 } catch (Exception e) {
                     System.out.println("Invalid task number.");
                 }
+            } else if (userInput.startsWith("todo ")) {
+                String description = userInput.substring(5).trim();
+                Task newTask = new Todo(description);
+                tasks.add(newTask);
+                printTaskAdded(newTask, tasks.size());
+            } else if (userInput.startsWith("deadline ")) {
+                String[] parts = userInput.substring(9).split(" /by ", 2);
+                if (parts.length < 2) {
+                    System.out.println("Invalid format. Use: deadline <description> /by <time>");
+                    continue;
+                }
+                Task newTask = new Deadline(parts[0].trim(), parts[1].trim());
+                tasks.add(newTask);
+                printTaskAdded(newTask, tasks.size());
+            } else if (userInput.startsWith("event ")) {
+                String[] parts = userInput.substring(6).split(" /from | /to ", 3);
+                if (parts.length < 3) {
+                    System.out.println("Invalid format. Use: event <description> /from <time> /to <time>");
+                    continue;
+                }
+                Task newTask = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
+                tasks.add(newTask);
+                printTaskAdded(newTask, tasks.size());
             } else {
-                // Store and acknowledge input
-                tasks.add(new Task(userInput));
-                System.out.println("____________________________________________________________");
-                System.out.println("added: " + userInput);
-                System.out.println("____________________________________________________________");
+                System.out.println("Invalid command! Use 'todo', 'deadline', or 'event'.");
             }
         }
 
         scanner.close();
+    }
+
+    private static void printTaskAdded(Task task, int taskCount) {
+        System.out.println("____________________________________________________________");
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + task);
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("____________________________________________________________");
     }
 }
