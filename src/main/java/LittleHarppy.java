@@ -300,6 +300,4 @@ public class LittleHarppy {
     private static void printTaskAdded(Task taskAdded) {
         System.out.println("Got it. I've added this task: " + taskAdded);
     }
-    private static void doNothing(){
-    }
 }
