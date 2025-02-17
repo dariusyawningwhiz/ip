@@ -130,8 +130,6 @@ public class LittleHarppy {
             addDeadlineTask(input);
         } else if (input.startsWith("event ")) {
             addEventTask(input);
-        }else if (input.startsWith("delete ")) {
-            deleteTask(input);
         } else {
             System.out.println("Invalid command! Use 'todo', 'deadline', or 'event'.");
         }
@@ -301,33 +299,5 @@ public class LittleHarppy {
 
     private static void printTaskAdded(Task taskAdded) {
         System.out.println("Got it. I've added this task: " + taskAdded);
-    }
-
-    private static void deleteTask(String input) {
-        final int TASK_INDEX_OFFSET = 1;
-        final int COMMAND_PARTS = 2;
-        final int TASK_NUMBER_INDEX = 1;
-        final String regex = " ";
-        try {
-            String[] inputParts = input.split(regex);
-            if (inputParts.length < COMMAND_PARTS) {
-                throw new IllegalArgumentException("Missing task number.");
-            }
-            int taskIndex = Integer.parseInt(inputParts[TASK_NUMBER_INDEX]) - TASK_INDEX_OFFSET;
-            if (taskIndex < 0 || taskIndex >= tasks.size()) {
-                System.out.println("Task number out of range. Please enter a valid task number.");
-                return;
-            }
-            Task removedTask = tasks.remove(taskIndex);
-            printSeparator();
-            System.out.println("Noted. I've removed this task:");
-            System.out.println("  " + removedTask);
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-            printSeparator();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid task number.");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
