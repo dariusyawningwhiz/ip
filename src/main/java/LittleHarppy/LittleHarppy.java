@@ -243,4 +243,5 @@ class LittleHarppy {
             System.out.println("No existing task file found, starting fresh.");
         }
     }
+    int a;
 }
