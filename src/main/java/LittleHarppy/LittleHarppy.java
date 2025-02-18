@@ -4,13 +4,15 @@ import LittleHarppy.exception.LittleHarppyException;
 import java.io.*;
 import java.util.*;
 import Tasks.*;
+import file.TasksLoader;
+import file.TaskSaver;
 
 class LittleHarppy {
     private static final String CHATBOT_NAME = "LittleHarppy";
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Task> tasks = new ArrayList<>();
-    private static final String FILE_PATH = "../../../ip/src/main/java/data/duke.txt";
-
+    private static final String FILE_PATH = "...//main//java//data//duke.txt";
+    //C://Users//LENOVO//OneDrive - National University of Singapore//Desktop//Darius//NUS//Y2S2//CS2113 Software Engineering & OOP//ip//src//main//java//data//duke.txt
     public static void main(String[] args) {
         try {
             displayWelcomeMessage();
@@ -40,7 +42,7 @@ class LittleHarppy {
     private static void displayWelcomeMessage() throws LittleHarppyException {
         printSeparator();
         System.out.println("Hello! I'm " + CHATBOT_NAME);
-        System.out.println("  /^_^/"); // Fun graphics
+        System.out.println("  /^_^/");
         System.out.println(" ( o.o ) ");
         System.out.println("  > ~ <");
         System.out.println("\nYou can add tasks typing 'todo ...', 'deadline ...', or 'event ...'.");
@@ -119,6 +121,7 @@ class LittleHarppy {
                 System.out.println("OK, I've marked this task as not done yet:");
             }
             System.out.println("  " + task);
+            saveTasks();
         } catch (NumberFormatException e) {
             System.out.println(LittleHarppyException.invalidTaskNumberFormat().getMessage());
         } catch (LittleHarppyException e) {
@@ -144,6 +147,7 @@ class LittleHarppy {
             System.out.println("  " + removedTask);
             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             printSeparator();
+            saveTasks();
         } catch (NumberFormatException e) {
             System.out.println(LittleHarppyException.invalidTaskNumberFormat().getMessage());
         } catch (LittleHarppyException e) {
@@ -221,11 +225,8 @@ class LittleHarppy {
     }
 
     private static void saveTasks() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (Task task : tasks) {
-                writer.write(task.toString());
-                writer.newLine();
-            }
+        try {
+            TaskSaver.saveTasks(FILE_PATH, tasks);  // Use TaskSaver to save tasks
         } catch (IOException e) {
             System.out.println("Error saving tasks to file.");
         }
@@ -235,25 +236,11 @@ class LittleHarppy {
         try {
             File file = new File(FILE_PATH);
             if (file.exists()) {
-                Scanner fileScanner = new Scanner(file);
-                while (fileScanner.hasNextLine()) {
-                    String taskData = fileScanner.nextLine().trim();
-                    if (taskData.startsWith("[T]")) {
-                        tasks.add(Todo.fromFileString(taskData));
-                    } else if (taskData.startsWith("[D]")) {
-                        tasks.add(Deadline.fromFileString(taskData));
-                    } else if (taskData.startsWith("[E]")) {
-                        tasks.add(Event.fromFileString(taskData));
-                    } else {
-                        throw new LittleHarppyException("Invalid task data format: " + taskData);
-                    }
-                }
-                fileScanner.close();
+                ArrayList<Task> loadedTasks = TasksLoader.loadTasks(FILE_PATH);
+                tasks.addAll(loadedTasks);
             }
         } catch (FileNotFoundException e) {
             System.out.println("No existing task file found, starting fresh.");
-        } catch (LittleHarppyException e) {
-            System.out.println("Error loading tasks: " + e.getMessage());
         }
     }
 }

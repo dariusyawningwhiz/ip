@@ -10,6 +10,14 @@ public class Event extends Task {
         this.toTime = toTime;
     }
 
+    public String getFromTime() {  // Add this method
+        return fromTime;
+    }
+
+    public String getToTime() {  // Add this method
+        return toTime;
+    }
+
     public static Event fromFileString(String taskData) {
         String description = taskData.substring(6, taskData.indexOf(" /from")).trim();
         String fromTime = taskData.substring(taskData.indexOf(" /from") + 6, taskData.indexOf(" /to")).trim();

@@ -16,6 +16,10 @@ public class Deadline extends Task {
         return new Deadline(description, deadlineTime);
     }
 
+    public String getDeadlineTime() {  // Add this method
+        return deadlineTime;
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + deadlineTime + ")";
