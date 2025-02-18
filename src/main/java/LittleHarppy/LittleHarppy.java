@@ -256,4 +256,5 @@ class LittleHarppy {
             System.out.println("Error loading tasks: " + e.getMessage());
         }
     }
+    private static void doNothing() {};
 }
