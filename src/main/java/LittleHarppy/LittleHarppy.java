@@ -11,7 +11,7 @@ class LittleHarppy {
     private static final String CHATBOT_NAME = "LittleHarppy";
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Task> tasks = new ArrayList<>();
-    private static final String FILE_PATH = "...//main//java//data//duke.txt";
+    private static final String FILE_PATH = "..//data//LittleHarppy.txt";
     //C://Users//LENOVO//OneDrive - National University of Singapore//Desktop//Darius//NUS//Y2S2//CS2113 Software Engineering & OOP//ip//src//main//java//data//duke.txt
     public static void main(String[] args) {
         try {
@@ -228,7 +228,7 @@ class LittleHarppy {
         try {
             TaskSaver.saveTasks(FILE_PATH, tasks);  // Use TaskSaver to save tasks
         } catch (IOException e) {
-            System.out.println("Error saving tasks to file.");
+            throw new RuntimeException(e);
         }
     }
 
@@ -243,5 +243,4 @@ class LittleHarppy {
             System.out.println("No existing task file found, starting fresh.");
         }
     }
-    private static void doNothing() {};
 }
