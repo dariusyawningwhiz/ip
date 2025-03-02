@@ -3,12 +3,22 @@ package LittleHarppy;
 import file.Storage;
 import java.io.*;
 
+/**
+ * The main class for the LittleHarppy application.
+ * This class is responsible for setting up and running the application,
+ * managing the interaction with the user and loading/saving tasks.
+ */
 public class LittleHarppy {
-    private Storage storage;
+    private final Storage storage;
     private TaskList tasks;
-    private Ui ui;
-    private Parser parser;
+    private final Ui ui;
+    private final Parser parser;
 
+    /**
+     * Constructs a new LittleHarppy application.
+     *
+     * @param filePath the file path to load/save task data
+     */
     public LittleHarppy(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -21,6 +31,10 @@ public class LittleHarppy {
         }
     }
 
+    /**
+     * Runs the LittleHarppy application.
+     * This method handles user input and displays relevant output until 'bye' is typed.
+     */
     public void run() {
         ui.showWelcome();
         boolean isRunning = true;
@@ -31,10 +45,11 @@ public class LittleHarppy {
         ui.showExitMessage();
     }
 
+    /**
+     * Main method to run the LittleHarppy application.
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         new LittleHarppy("//C://Users//LENOVO//OneDrive - National University of Singapore//Desktop//Darius//NUS//Y2S2//CS2113 Software Engineering & OOP//ip//src//main//java//data//LittleHarppy.txt").run();
-        //"data/LittleHarppy.txt"
-        //to test on command-prompt: java -jar "C:\Users\LENOVO\OneDrive - National University of Singapore\Desktop\Darius\NUS\Y2S2\CS2113 Software Engineering & OOP\ip\out\artifacts\ip_jar2\ip.jar"
     }
 }
-

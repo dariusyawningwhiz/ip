@@ -1,34 +1,52 @@
 package Tasks;
 
+/**
+ * Represents an Event task, which includes a description, a start time, and an end time.
+ * An Event task is a type of task that happens within a specific time range.
+ */
 public class Event extends Task {
-    private String fromTime;
-    private String toTime;
+    private final String fromTime;
+    private final String toTime;
 
+    /**
+     * Constructs an Event task with the given description, start time, and end time.
+     *
+     * @param description the description of the event
+     * @param fromTime the start time of the event
+     * @param toTime the end time of the event
+     */
     public Event(String description, String fromTime, String toTime) {
         super(description);
         this.fromTime = fromTime;
         this.toTime = toTime;
     }
 
-    public String getFromTime() {  // Add this method
+    /**
+     * Returns the start time of this event.
+     *
+     * @return the start time of the event
+     */
+    public String getFromTime() {
         return fromTime;
     }
 
-    public String getToTime() {  // Add this method
+    /**
+     * Returns the end time of this event.
+     *
+     * @return the end time of the event
+     */
+    public String getToTime() {
         return toTime;
     }
 
-    public static Event fromFileString(String taskData) {
-        String description = taskData.substring(6, taskData.indexOf(" /from")).trim();
-        String fromTime = taskData.substring(taskData.indexOf(" /from") + 6, taskData.indexOf(" /to")).trim();
-        String toTime = taskData.substring(taskData.indexOf(" /to") + 4).trim();
-        return new Event(description, fromTime, toTime);
-    }
-
-
+    /**
+     * Returns a string representation of the Event task.
+     * The format includes the task type, status, description, start time, and end time.
+     *
+     * @return a string representation of the Event task
+     */
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + fromTime + " to: " + toTime + ")";
     }
 }
-
