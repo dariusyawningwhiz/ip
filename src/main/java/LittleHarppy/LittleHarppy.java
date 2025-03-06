@@ -1,7 +1,7 @@
 package LittleHarppy;
 
 import file.Storage;
-import java.io.*;
+import java.io.IOException;
 
 /**
  * The main class for the LittleHarppy application.
@@ -47,9 +47,8 @@ public class LittleHarppy {
 
     /**
      * Main method to run the LittleHarppy application.
-     * @param args command-line arguments
      */
     public static void main(String[] args) {
-        new LittleHarppy("//C://Users//LENOVO//OneDrive - National University of Singapore//Desktop//Darius//NUS//Y2S2//CS2113 Software Engineering & OOP//ip//src//main//java//data//LittleHarppy.txt").run();
+        new LittleHarppy("data/LittleHarppy.txt").run();
     }
 }
