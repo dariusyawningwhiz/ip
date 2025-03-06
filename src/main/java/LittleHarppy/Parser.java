@@ -101,7 +101,8 @@ public class Parser {
     private void addEvent(String input, TaskList tasks, Ui ui) throws LittleHarppyException {
         String[] eventsInfo = input
                 .substring(eventDescriptionIndex)
-                .split(eventSeparatorFrom + "|" + eventSeparatorTo, minimumThreeArguments);        if (eventsInfo.length < minimumThreeArguments) {
+                .split(eventSeparatorFrom + "|" + eventSeparatorTo, minimumThreeArguments);
+        if (eventsInfo.length < minimumThreeArguments) {
             throw LittleHarppyException.incorrectEventFormat();
         }
         Task newTask = new Event(eventsInfo[0].trim(), eventsInfo[1].trim(), eventsInfo[2].trim());
