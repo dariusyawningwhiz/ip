@@ -5,11 +5,10 @@ package Tasks;
  * A Todo task is a simple type of task that doesn't have additional attributes like deadline or event times.
  */
 public class Todo extends Task {
+    private static final  String taskType = "[T]";
 
     /**
      * Constructs a Todo task with the given description.
-     *
-     * @param description the description of the task
      */
     public Todo(String description) {
         super(description);
@@ -18,12 +17,10 @@ public class Todo extends Task {
     /**
      * Returns a string representation of the Todo task.
      * The format includes the task type and the task status.
-     *
-     * @return a string representation of the Todo task
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return taskType + super.toString();
     }
 }
 

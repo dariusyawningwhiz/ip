@@ -1,7 +1,6 @@
 package LittleHarppy;
 
 import Tasks.Task;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,7 +9,7 @@ import java.util.Scanner;
  * This class handles the display of messages to the user and the gathering of user input.
  */
 public class Ui {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     /**
      * Constructs a new Ui object with a scanner for user input.
@@ -52,18 +51,10 @@ public class Ui {
         System.out.println("Error loading tasks. Starting fresh.");
     }
 
-    /**
-     * Retrieves the user input from the command line.
-     *
-     * @return the user input
-     */
     public String getUserInput() {
         return scanner.nextLine().trim();
     }
 
-    /**
-     * Prints a separator line to format the output.
-     */
     private void printSeparator() {
         System.out.println("____________________________________________________________");
     }
@@ -87,8 +78,6 @@ public class Ui {
 
     /**
      * Displays a message indicating that a task was unmarked.
-     *
-     * @param task the task that was unmarked
      */
     public void showTaskUnmarked(Task task) {
         System.out.println("OK, I've marked this task as not done yet:");
@@ -97,8 +86,6 @@ public class Ui {
 
     /**
      * Displays a list of tasks that match the search keyword.
-     *
-     * @param tasks the list of tasks to display
      */
     public void showFoundTasks(ArrayList<Task> tasks) {
         if (tasks.isEmpty()) {

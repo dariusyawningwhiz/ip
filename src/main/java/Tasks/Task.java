@@ -7,11 +7,10 @@ package Tasks;
 public abstract class Task {
     private final String description;
     private boolean isDone;
-
+    private static final String doneStatus = "[X] ";
+    private static final String undoneStatus = "[ ] ";
     /**
      * Constructs a Task with the given description. Initially, the task is not done.
-     *
-     * @param description the description of the task
      */
     public Task(String description) {
         this.description = description;
@@ -34,8 +33,6 @@ public abstract class Task {
 
     /**
      * Returns whether the task is done.
-     *
-     * @return true if the task is done, false otherwise
      */
     public boolean isDone() {
         return this.isDone;
@@ -43,8 +40,6 @@ public abstract class Task {
 
     /**
      * Returns the description of the task.
-     *
-     * @return the description of the task
      */
     public String getDescription() {
         return description;
@@ -53,11 +48,9 @@ public abstract class Task {
     /**
      * Returns a string representation of the Task.
      * The format includes the task status (done or not) and description.
-     *
-     * @return a string representation of the Task
      */
     @Override
     public String toString() {
-        return (isDone ? "[X] " : "[ ] ") + description;
+        return (isDone ? doneStatus : undoneStatus) + description;
     }
 }

@@ -3,7 +3,6 @@ package file;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Tasks.Task;
 import Tasks.Todo;
 import Tasks.Deadline;
@@ -11,40 +10,69 @@ import Tasks.Event;
 
 /**
  * This class handles the saving of task data to a file.
- * It writes task information in a specific format so that it can later be loaded correctly.
  */
 public class TaskSaver {
+
+    private static final String todoTaskType = "T";
+    private static final String deadlineTaskType = "D";
+    private static final String eventTaskType = "E";
+    private static final String taskSeparator = " | ";
+    private static final String dontStatus = "1";
+    private static final String notDoneStatus = "0";
+
     /**
      * Saves a list of tasks to a file in a specific format.
-     * Each task is written as a string representing its type, completion status, and other relevant details.
-     *
-     * @param filePath the file path where the tasks should be saved
-     * @param tasks the list of tasks to save
-     * @throws IOException if there is an error while writing to the file
      */
     public static void saveTasks(String filePath, ArrayList<Task> tasks) throws IOException {
-        FileWriter writer = new FileWriter(filePath);
-
-        // Loop through each task and write its data in a specific format
-        for (Task task : tasks) {
-            String taskType = "";
-            String taskData = "";
-
-            if (task instanceof Todo) {
-                taskType = "T";  // Represents a Todo task
-                taskData = taskType + " | " + (task.isDone() ? "1" : "0") + " | " + ((Todo) task).getDescription();
-            } else if (task instanceof Deadline) {
-                taskType = "D";  // Represents a Deadline task
-                taskData = taskType + " | " + (task.isDone() ? "1" : "0") + " | " + ((Deadline) task).getDescription() + " | " + ((Deadline) task).getDeadlineTime();
-            } else if (task instanceof Event) {
-                taskType = "E";  // Represents an Event task
-                taskData = taskType + " | " + (task.isDone() ? "1" : "0") + " | " + ((Event) task).getDescription() + " | " + ((Event) task).getFromTime() + " | " + ((Event) task).getToTime();
+        try (FileWriter writer = new FileWriter(filePath)) {
+            for (Task task : tasks) {
+                String taskData = formatTaskData(task);
+                writer.write(taskData + System.lineSeparator());
             }
+        }
+    }
 
-            // Write the formatted task data to the file
-            writer.write(taskData + System.lineSeparator());
+    /**
+     * Formats the task data based on the type of task.
+     */
+    private static String formatTaskData(Task task) {
+        String taskData = "";
+
+        if (task instanceof Todo) {
+            taskData = formatTodoTask((Todo) task);
+        } else if (task instanceof Deadline) {
+            taskData = formatDeadlineTask((Deadline) task);
+        } else if (task instanceof Event) {
+            taskData = formatEventTask((Event) task);
         }
 
-        writer.close();  // Close the writer after writing all tasks
+        return taskData;
+    }
+
+    /**
+     * Formats the data for a Todo task.
+     */
+    private static String formatTodoTask(Todo todo) {
+        return todoTaskType + taskSeparator + (todo.isDone() ? dontStatus : notDoneStatus) +
+                taskSeparator + todo.getDescription();
+    }
+
+    /**
+     * Formats the data for a Deadline task.
+     */
+    private static String formatDeadlineTask(Deadline deadline) {
+        return deadlineTaskType + taskSeparator + (deadline.isDone() ? dontStatus : notDoneStatus) +
+                taskSeparator + deadline.getDescription() + taskSeparator + deadline.getDeadlineTime();
+    }
+
+    /**
+     * Formats the data for an Event task.
+     */
+    private static String formatEventTask(Event event) {
+        return eventTaskType + taskSeparator + (event.isDone() ? dontStatus : notDoneStatus) +
+                taskSeparator + event.getDescription() + taskSeparator + event.getFromTime() +
+                taskSeparator + event.getToTime();
     }
 }
+
+
